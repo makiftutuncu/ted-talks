@@ -1,0 +1,8 @@
+*.class
+*.log
+hs_err_pid*
+.idea
+*.iml
+.gradle
+build
+logs

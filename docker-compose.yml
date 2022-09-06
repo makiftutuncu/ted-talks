@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  ted-talks-db:
+    container_name: ted-talks-db
+    image: postgres:13.5
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    volumes:
+      - ted-talks-db:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_USER=${DB_USER:-ted-talks}"
+      - "POSTGRES_PASSWORD=${DB_PASSWORD:-ted-talks}"
+      - "POSTGRES_DB=${DB_NAME:-ted-talks}"
+    networks:
+      - ted-talks-network
+  ted-talks:
+    container_name: ted-talks
+    image: ted-talks
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8080}:8080"
+    depends_on:
+      - ted-talks-db
+    networks:
+      - ted-talks-network
+    environment:
+      - "DB_HOST=ted-talks-db"
+      - "DB_PORT=5432"
+      - "DB_NAME=ted-talks"
+      - "DB_USER=ted-talks"
+      - "DB_PASSWORD=ted-talks"
+
+volumes:
+  ted-talks-db:
+    driver: local
+
+networks:
+  ted-talks-network:
+    driver: bridge
