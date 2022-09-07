@@ -41,11 +41,12 @@ public class TedTalkController {
     @NonNull PagedResponse<TedTalkDTO> list(
             @RequestParam(value = "page", required = false, defaultValue = "1") int page,
             @RequestParam(value = "perPage", required = false, defaultValue = "20") int perPage,
-            @RequestParam(value = "ascending", required = false, defaultValue = "true") boolean ascending
+            @RequestParam(value = "ascending", required = false, defaultValue = "true") boolean ascending,
+            @RequestParam(value = "search", required = false) String search
     ) {
         val pageRequest = PageRequest.of(page - 1, perPage, Sort.by(ascending ? Sort.Direction.ASC : Sort.Direction.DESC, TedTalkEntity.TITLE));
 
-        return new PagedResponse<>(service.list(pageRequest).map(TedTalkDTO::from));
+        return new PagedResponse<>(service.list(pageRequest, search).map(TedTalkDTO::from));
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

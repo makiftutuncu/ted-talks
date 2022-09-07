@@ -17,6 +17,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "authors")
 public class AuthorEntity {
+    public static final String NAME = "name";
+
     @Column(name = "id", nullable = false, unique = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

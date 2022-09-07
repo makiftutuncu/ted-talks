@@ -21,6 +21,7 @@ import java.time.LocalDate;
 @Table(name = "ted_talks")
 public class TedTalkEntity {
     public static final String TITLE = "title";
+    public static final String AUTHOR = "author";
 
     @Column(name = "id", nullable = false, unique = true)
     @Id

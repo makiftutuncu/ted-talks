@@ -82,14 +82,14 @@ public class CSVService {
             val likes = Long.parseLong(likesString);
 
             val authorEntity = new AuthorEntity(authorName);
-            log.debug("Found author: {}", authorEntity);
+            log.debug("Found author {}", authorEntity);
             authorEntities.add(authorEntity);
 
             val tedTalkEntity = new TedTalkEntity(title, authorEntity, date, views, likes, link);
-            log.debug("Found TED talk: {}", tedTalkEntity);
+            log.debug("Found TED talk {}", tedTalkEntity);
             tedTalkEntities.add(tedTalkEntity);
         } catch (Exception e) {
-            log.error("Error while processing line: {}", line, e);
+            log.error("Error while processing line '{}'", line, e);
         }
     }
 }
