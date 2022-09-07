@@ -20,6 +20,8 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Table(name = "ted_talks")
 public class TedTalkEntity {
+    public static final String TITLE = "title";
+
     @Column(name = "id", nullable = false, unique = true)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

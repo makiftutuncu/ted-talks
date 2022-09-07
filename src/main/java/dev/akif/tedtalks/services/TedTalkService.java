@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import lombok.val;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,13 +41,12 @@ public class TedTalkService {
         return tedTalks.save(new TedTalkEntity(title, author, link)).toModel();
     }
 
-    public @NonNull List<TedTalk> list() {
-        log.info("Listing all TED talks");
+    public @NonNull Page<TedTalk> list(@NonNull Pageable pageable) {
+        log.info("Listing all TED talks for page: {}", pageable);
 
-        return StreamSupport
-                .stream(tedTalks.findAll().spliterator(), false)
-                .map(TedTalkEntity::toModel)
-                .toList();
+        return tedTalks
+                .findAll(pageable)
+                .map(TedTalkEntity::toModel);
     }
 
     public @NonNull Optional<TedTalk> get(long id) {

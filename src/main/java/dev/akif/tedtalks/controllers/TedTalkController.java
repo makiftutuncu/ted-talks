@@ -1,11 +1,16 @@
 package dev.akif.tedtalks.controllers;
 
 import dev.akif.tedtalks.dtos.CreateTedTalkDTO;
+import dev.akif.tedtalks.dtos.PagedResponse;
 import dev.akif.tedtalks.dtos.TedTalkDTO;
 import dev.akif.tedtalks.dtos.UpdateTedTalkDTO;
+import dev.akif.tedtalks.entities.TedTalkEntity;
 import dev.akif.tedtalks.services.TedTalkService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
+import lombok.val;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,10 +21,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @AllArgsConstructor
 @RequestMapping("/ted-talks")
@@ -34,12 +38,14 @@ public class TedTalkController {
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @NonNull List<TedTalkDTO> list() {
-        return service
-                .list()
-                .stream()
-                .map(TedTalkDTO::from)
-                .toList();
+    @NonNull PagedResponse<TedTalkDTO> list(
+            @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+            @RequestParam(value = "perPage", required = false, defaultValue = "20") int perPage,
+            @RequestParam(value = "ascending", required = false, defaultValue = "true") boolean ascending
+    ) {
+        val pageRequest = PageRequest.of(page - 1, perPage, Sort.by(ascending ? Sort.Direction.ASC : Sort.Direction.DESC, TedTalkEntity.TITLE));
+
+        return new PagedResponse<>(service.list(pageRequest).map(TedTalkDTO::from));
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
