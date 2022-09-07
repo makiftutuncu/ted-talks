@@ -10,12 +10,12 @@ CREATE TABLE ted_talks
 (
     id        BIGSERIAL PRIMARY KEY,
     author_id BIGINT NOT NULL REFERENCES authors (id),
-    name      TEXT   NOT NULL,
+    title     TEXT   NOT NULL,
     date      DATE   NOT NULL,
     views     BIGINT NOT NULL,
     likes     BIGINT NOT NULL,
     link      TEXT   NOT NULL,
-    UNIQUE (author_id, name)
+    UNIQUE (author_id, title)
 );
 
 ALTER SEQUENCE ted_talks_id_seq RESTART WITH 1;

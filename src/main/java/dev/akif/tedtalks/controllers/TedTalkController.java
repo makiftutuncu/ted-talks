@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,19 +49,13 @@ public class TedTalkController {
     }
 
     @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @NonNull ResponseEntity<TedTalkDTO> get(@PathVariable long id) {
-        return service
-                .get(id)
-                .map(tedTalk -> ResponseEntity.ok(TedTalkDTO.from(tedTalk)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @NonNull TedTalkDTO get(@PathVariable long id) {
+        return TedTalkDTO.from(service.get(id));
     }
 
     @PutMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    @NonNull ResponseEntity<TedTalkDTO> update(@PathVariable long id, @NonNull @RequestBody UpdateTedTalkDTO dto) {
-        return service
-                .update(id, dto.title(), dto.link())
-                .map(tedTalk -> ResponseEntity.ok(TedTalkDTO.from(tedTalk)))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @NonNull TedTalkDTO update(@PathVariable long id, @NonNull @RequestBody UpdateTedTalkDTO dto) {
+        return TedTalkDTO.from(service.update(id, dto.title(), dto.link()));
     }
 
     @DeleteMapping(path = "/{id}")

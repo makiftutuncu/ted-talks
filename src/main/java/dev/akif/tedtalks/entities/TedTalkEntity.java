@@ -1,6 +1,8 @@
 package dev.akif.tedtalks.entities;
 
 import dev.akif.tedtalks.models.TedTalk;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -15,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
+@AllArgsConstructor
+@Builder(toBuilder = true)
 @Data
 @Entity(name = "ted_talk")
 @NoArgsConstructor
@@ -28,7 +32,7 @@ public class TedTalkEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "title", nullable = false)
     private @NonNull String title;
 
     @ManyToOne(optional = false)

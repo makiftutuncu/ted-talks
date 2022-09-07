@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 @AllArgsConstructor
 @Service
@@ -28,40 +27,7 @@ public class CSVService {
     private final AuthorRepository authors;
     private final TedTalkRepository tedTalks;
 
-    @Transactional
-    public void importTedTalks() {
-        try {
-            log.info("Importing TED talks from CSV file");
-
-            val resource = new ClassPathResource("data.csv");
-            val fileContent = Files.readString(resource.getFile().toPath());
-
-            val authorEntities = new ArrayList<AuthorEntity>();
-            val tedTalkEntities = new ArrayList<TedTalkEntity>();
-
-            Arrays.stream(fileContent.split("\n")).skip(1).forEach(line -> processLine(line, authorEntities, tedTalkEntities));
-
-            val authorEntitiesToSave = authorEntities.stream().distinct().toList();
-
-            val authorNamesToAuthorEntities = StreamSupport
-                    .stream(authors.saveAll(authorEntitiesToSave).spliterator(), true)
-                    .collect(Collectors.toMap(AuthorEntity::getName, author -> author));
-
-            val tedTalkEntitiesToSave = tedTalkEntities
-                    .stream()
-                    .peek(tedTalk -> tedTalk.setAuthor(authorNamesToAuthorEntities.get(tedTalk.getAuthor().getName())))
-                    .distinct()
-                    .toList();
-
-            tedTalks.saveAll(tedTalkEntitiesToSave);
-
-            log.info("Imported {} TED talks by {} authors", tedTalkEntitiesToSave.size(), authorEntitiesToSave.size());
-        } catch (Exception e) {
-            log.error("Error while importing CSV file", e);
-        }
-    }
-
-    private void processLine(@NonNull String line, @NonNull ArrayList<AuthorEntity> authorEntities, @NonNull ArrayList<TedTalkEntity> tedTalkEntities) {
+    static void processLine(@NonNull String line, @NonNull ArrayList<AuthorEntity> authorEntities, @NonNull ArrayList<TedTalkEntity> tedTalkEntities) {
         try {
             val parts = line.split(",");
 
@@ -90,6 +56,40 @@ public class CSVService {
             tedTalkEntities.add(tedTalkEntity);
         } catch (Exception e) {
             log.error("Error while processing line '{}'", line, e);
+        }
+    }
+
+    @Transactional
+    public void importTedTalks() {
+        try {
+            log.info("Importing TED talks from CSV file");
+
+            val resource = new ClassPathResource("data.csv");
+            val fileContent = Files.readString(resource.getFile().toPath());
+
+            val authorEntities = new ArrayList<AuthorEntity>();
+            val tedTalkEntities = new ArrayList<TedTalkEntity>();
+
+            Arrays.stream(fileContent.split("\n")).skip(1).forEach(line -> processLine(line, authorEntities, tedTalkEntities));
+
+            val authorEntitiesToSave = authorEntities.stream().distinct().toList();
+
+            val authorNamesToAuthorEntities = authors
+                    .saveAll(authorEntitiesToSave)
+                    .stream()
+                    .collect(Collectors.toMap(AuthorEntity::getName, author -> author));
+
+            val tedTalkEntitiesToSave = tedTalkEntities
+                    .stream()
+                    .peek(tedTalk -> tedTalk.setAuthor(authorNamesToAuthorEntities.get(tedTalk.getAuthor().getName())))
+                    .distinct()
+                    .toList();
+
+            tedTalks.saveAll(tedTalkEntitiesToSave);
+
+            log.info("Imported {} TED talks by {} authors", tedTalkEntitiesToSave.size(), authorEntitiesToSave.size());
+        } catch (Exception e) {
+            log.error("Error while importing CSV file", e);
         }
     }
 }
