@@ -27,7 +27,7 @@ public class TedTalkService {
     public @NonNull TedTalk create(@NonNull String title,
                                    @NonNull String authorName,
                                    @NonNull String link) {
-        log.info("Creating a new TedTalk with title: {}, author: {}, link: {}", title, authorName, link);
+        log.info("Creating a new TED talk with title: {}, author: {}, link: {}", title, authorName, link);
 
         val author = authors
                 .findByName(authorName)
@@ -40,7 +40,7 @@ public class TedTalkService {
     }
 
     public @NonNull List<TedTalk> list() {
-        log.info("Listing all TedTalks");
+        log.info("Listing all TED talks");
 
         return StreamSupport
                 .stream(tedTalks.findAll().spliterator(), false)
@@ -49,7 +49,7 @@ public class TedTalkService {
     }
 
     public @NonNull Optional<TedTalk> get(long id) {
-        log.info("Getting TedTalk with id {}", id);
+        log.info("Getting TED talk with id {}", id);
 
         return tedTalks
                 .findById(id)
@@ -60,7 +60,7 @@ public class TedTalkService {
     public @NonNull Optional<TedTalk> update(long id,
                                              @NonNull String title,
                                              @NonNull String link) {
-        log.info("Updating TedTalk with id {} with title: {}, link: {}", id, title, link);
+        log.info("Updating TED talk with id {} with title: {}, link: {}", id, title, link);
 
         return tedTalks
                 .findById(id)
@@ -73,7 +73,7 @@ public class TedTalkService {
     }
 
     public void delete(long id) {
-        log.info("Deleting TedTalk with id {}", id);
+        log.info("Deleting TED talk with id {}", id);
 
         tedTalks.deleteById(id);
     }

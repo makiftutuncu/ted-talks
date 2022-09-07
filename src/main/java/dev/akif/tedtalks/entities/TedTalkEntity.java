@@ -56,6 +56,15 @@ public class TedTalkEntity {
         setLink(link);
     }
 
+    public TedTalkEntity(@NonNull String title, @NonNull AuthorEntity author, @NonNull LocalDate date, long views, long likes, @NonNull String link) {
+        setTitle(title);
+        setAuthor(author);
+        setDate(date);
+        setViews(views);
+        setLikes(likes);
+        setLink(link);
+    }
+
     public @NonNull TedTalk toModel() {
         return new TedTalk(id, title, author.toModel(), date, views, likes, link);
     }
