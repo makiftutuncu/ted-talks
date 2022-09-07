@@ -4,9 +4,11 @@ import dev.akif.tedtalks.entities.TedTalkEntity;
 import dev.akif.tedtalks.errors.DuplicateTedTalk;
 import lombok.NonNull;
 import lombok.val;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -15,6 +17,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
+@Primary
+@Repository
 public class InMemoryTedTalkRepository implements TedTalkRepository {
     private final AuthorRepository authors;
 

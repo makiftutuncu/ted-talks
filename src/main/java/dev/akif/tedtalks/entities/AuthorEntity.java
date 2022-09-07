@@ -1,6 +1,7 @@
 package dev.akif.tedtalks.entities;
 
 import dev.akif.tedtalks.models.Author;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+@AllArgsConstructor
 @Data
 @Entity(name = "author")
 @NoArgsConstructor

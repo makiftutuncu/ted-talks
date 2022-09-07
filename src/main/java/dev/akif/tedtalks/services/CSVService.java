@@ -12,11 +12,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.file.Files;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
@@ -61,16 +61,13 @@ public class CSVService {
 
     @Transactional
     public void importTedTalks() {
-        try {
-            log.info("Importing TED talks from CSV file");
+        log.info("Importing TED talks from CSV file");
 
-            val resource = new ClassPathResource("data.csv");
-            val fileContent = Files.readString(resource.getFile().toPath());
-
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new ClassPathResource("data.csv").getInputStream()))) {
             val authorEntities = new ArrayList<AuthorEntity>();
             val tedTalkEntities = new ArrayList<TedTalkEntity>();
 
-            Arrays.stream(fileContent.split("\n")).skip(1).forEach(line -> processLine(line, authorEntities, tedTalkEntities));
+            reader.lines().skip(1).forEach(line -> processLine(line, authorEntities, tedTalkEntities));
 
             val authorEntitiesToSave = authorEntities.stream().distinct().toList();
 

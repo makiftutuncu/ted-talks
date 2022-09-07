@@ -1,4 +1,4 @@
-# Ted Talks
+# TED Talks
 
 ## Table of Contents
 
@@ -12,7 +12,7 @@
 
 ## Introduction
 
-Ted Talks is a web backend application. It provides APIs to manage information about Ted Talks.
+TED Talks is a web backend application. It provides APIs to manage information about TED Talks.
 
 It uses
 
@@ -21,11 +21,12 @@ It uses
 * PostgreSQL for database
 * Flyway to manage DB schemas
 * Spring Data JPA to database access
-* JUnit 5 and Testcontainers for testing
+* JUnit 5 for testing
+* SpringDoc for API documentation
 
 ## Configuration
 
-There is no need for a manual configuration as default values are enough to run Ted Talks out-of-the-box (as long as database is available, see [Docker section](#docker)). However, if you wish to make your own configuration, you can do so via [application.properties](src/main/resources/application.properties). You can also override config values with following environment variables.
+You should be able to run the application out-of-the-box without any further configuration (as long as database is available, see [Docker section](#docker)). However, if you wish to make your own configuration, you can do so via [application.properties](src/main/resources/application.properties). You can also override config values with following environment variables.
 
 | Variable Name | Data Type | Description                          | Required                    |
 |---------------|-----------|--------------------------------------|-----------------------------|
@@ -37,7 +38,7 @@ There is no need for a manual configuration as default values are enough to run 
 
 ## Development and Running
 
-Ted Talks is built with Gradle. Standard Gradle tasks like `clean`, `compile`, `run` and `test` can be used.
+TED Talks is built with Gradle. Standard Gradle tasks like `clean`, `compile`, `run` and `test` can be used.
 
 If you don't have Gradle installed, you can replace `gradle` commands with `./gradlew` to use Gradle wrapper.
 
@@ -47,9 +48,11 @@ To run the application locally:
 gradle run --console=plain
 ```
 
+You may send a `POST` request to `/csv/import` endpoint to import some test data from CSV file. You can find a sample CSV file [data.csv](src/main/resources/data.csv).
+
 ## Docker
 
-Ted Talks can be run in Docker with its database. To build an image, first build the project
+TED Talks can be run in Docker with its database. To build an image, first build the project
 
 ```bash
 gradle build -x test
@@ -80,30 +83,11 @@ you'll be able to access the application at `http://localhost:80` and the databa
 
 ## API Docs
 
-Ted Talks provide OpenAPI documentation and a Swagger UI to browse them. After running the application, you may go to `/swagger-ui.html` to see the documentation.
+TED Talks provide OpenAPI documentation and a Swagger UI to browse them. After running the application, you may go to [`/swagger-ui.html`](http://localhost:8080/swagger-ui.html) to see the documentation.
 
-Here is an overview of the APIs:
-
-```
-// TODO
-```
-
-Errors return an error Json in following format:
-
-```json
-{
-  "message": "An unexpected error occurred",
-  "details": "Some details about the error"
-}
-```
-
-with a non-OK HTTP status code.
+All errors return a message in plain text with a non-OK HTTP status code.
 
 All successful responses will have `200 OK` status unless explicitly mentioned.
-
-```
-// TODO
-```
 
 ## Contributing
 
@@ -111,4 +95,4 @@ All contributions are welcome. Please feel free to send a pull request. Thank yo
 
 ## License
 
-Ted Talks is licensed with [MIT License](LICENSE.md).
+TED Talks is licensed with [MIT License](LICENSE.md).

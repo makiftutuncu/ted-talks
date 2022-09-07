@@ -2,12 +2,16 @@ package dev.akif.tedtalks.repositories;
 
 import dev.akif.tedtalks.entities.AuthorEntity;
 import lombok.NonNull;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Primary
+@Repository
 public class InMemoryAuthorRepository implements AuthorRepository {
     private final Map<Long, AuthorEntity> db = new HashMap<>();
 

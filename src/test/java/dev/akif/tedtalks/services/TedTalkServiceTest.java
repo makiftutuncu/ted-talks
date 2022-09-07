@@ -40,7 +40,7 @@ public class TedTalkServiceTest {
 
     @DisplayName("creating a new TED talk")
     @Test
-    void testCreate() throws DuplicateTedTalk {
+    void testCreate() {
         val before = tedTalks.findById(1);
         assertTrue(before.isEmpty());
 
@@ -93,6 +93,8 @@ public class TedTalkServiceTest {
 
         val error = assertThrows(TedTalkNotFound.class, () -> service.get(-1));
         assertEquals(new TedTalkNotFound(-1), error);
+
+        assertEquals(tedTalkEntity.toModel(), service.get(tedTalkEntity.getId()));
     }
 
     @DisplayName("updating a TED talk")
